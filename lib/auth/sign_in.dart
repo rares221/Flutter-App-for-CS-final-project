@@ -1,9 +1,9 @@
-import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:licenta_2022_vr/screens/home/home_screen.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  _googleSignUp() async {
+  Future <void> _googleSignUp() async {
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn(
         scopes: ['email'],
@@ -77,12 +77,22 @@ class _SignInState extends State<SignIn> {
                       SignInButton(
                         Buttons.Google,
                         text: "Sign in with Google",
-                        onPressed: () {},
+                        onPressed: () {
+                          _googleSignUp().then(
+                                (value) => Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => Homescreen()
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       SignInButton(
                         Buttons.Apple,
                         text: "Sign in with Apple Id",
-                        onPressed: () {},
+                        onPressed: () {
+
+                        },
                       ),
                     ],
                   ),

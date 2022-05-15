@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:licenta_2022_vr/screens/profile/my_profile.dart';
 class Homescreen extends StatelessWidget{
  @override
   Widget singleProduct(){
@@ -16,7 +17,7 @@ class Homescreen extends StatelessWidget{
          Expanded(
            flex:2,
            child: Image.network(
-             'https://fru-leg.ro/wp-content/uploads/2018/12/busuioc.jpg',
+             'https://www.seekpng.com/png/detail/19-191759_watercolor-plant-png-basil-leaves.png',
            ),
          ),
          Expanded(
@@ -80,11 +81,123 @@ class Homescreen extends StatelessWidget{
      ),
    );
  }
+
+  @override
+  Widget listTile({IconData icon , String tile, Function onTap}){
+   return ListTile(
+     onTap: onTap ,
+     leading: Icon(
+        icon,
+       size: 32,
+     ),
+     title: Text(tile , style: TextStyle(color: Colors.black), ),
+   );
+  }
+
+
   @override
   Widget build(BuildContext context) {
    return Scaffold(
      backgroundColor: Color(0xffd4d6d2),
      drawer: Drawer(
+       child: Container(
+         color: Colors.green,
+         child: ListView(
+           children: [
+             DrawerHeader(
+                 child: Row(
+                  children: [
+                  CircleAvatar(
+                   backgroundColor: Colors.white54,
+                    radius: 45,
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Color(0xff08bf08),
+                    ),
+
+                  ),
+                    SizedBox(
+                     width: 20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("   Bine ai venit!"),
+                        SizedBox(height: 7,),
+                        Container(
+                          height: 25,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            child: Text("Autentificare", style: TextStyle(color: Colors.black),),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            )
+
+                          ),
+                        )
+                      ],
+                    )
+                ],
+              ),
+             ),
+             listTile(icon: Icons.home_outlined,tile:"Acasa"),
+             listTile(icon: Icons.shopping_bag_outlined,tile:"Finalizare cos"),
+             listTile(
+                 icon: Icons.person_outlined,
+                 tile:"Profil",
+                 onTap: (){
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyProfile(),),);
+                 }
+             ),
+             listTile(icon: Icons.notifications_outlined,tile:"Notificari"),
+             listTile(icon: Icons.star_outline,tile:"Rating"),
+             listTile(icon: Icons.favorite_outline,tile:"Wishlist"),
+             listTile(icon: Icons.copy_outlined,tile:"Plangeri&Reclamatii"),
+             listTile(icon: Icons.format_quote_outlined,tile:"Intrebari comune"),
+
+             Container(
+               padding: EdgeInsets.symmetric(horizontal: 20),
+               height: 350,
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Text("Contact", style: TextStyle(color: Colors.black),),
+                   SizedBox(
+                     height: 20,
+                   ),
+                   Row(
+
+                     children: [
+                       Text("Telefon:", style: TextStyle(color: Colors.black54),),
+                       SizedBox(width: 25,),
+                       Text("+075573827734", style: TextStyle(color: Colors.black54),)
+                     ],
+                   ),
+                   SizedBox(height: 10,),
+                   Row(
+
+                     children: [
+                       Text("Email:", style: TextStyle(color: Colors.black54),),
+                       SizedBox(width: 15,),
+                       Text("Piata_Hermes@retry.com", style: TextStyle(color: Colors.black54),)
+                     ],
+                   )
+                 ],
+               ),
+             )
+
+           ],
+
+         ),
+       ),
 
      ),
      appBar: AppBar(
@@ -318,38 +431,7 @@ class Homescreen extends StatelessWidget{
              ),
            ),
 
-           Padding(
-             padding: const EdgeInsets.all(10.0),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
-                   "Carne & Oua & Lactate",
-                   style: TextStyle(fontWeight: FontWeight.bold),
-                 ),
-                 Text(
-                   "Toate produsele",
-                   style: TextStyle(color: Colors.grey),
-                 ),
 
-
-               ],
-
-             ),
-           ), //carne & oua & lactate
-           SingleChildScrollView(
-             scrollDirection: Axis.horizontal,
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-
-               ],
-             ),
-           ),
          ],
        ),
      ),
