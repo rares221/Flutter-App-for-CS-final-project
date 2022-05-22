@@ -1,190 +1,210 @@
 import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
 
-enum SignInCharacter {fill, outline}
 
 
-class ProductOverview extends StatefulWidget{
-  final String productImage;
+
+enum SinginCharacter { fill, outline }
+
+class ProductOverview extends StatefulWidget {
   final String productName;
-  ProductOverview( {this.productName, this.productImage} );
+  final String productImage;
+  final int productPrice;
+  final String productId;
+  ProductOverview({this.productImage, this.productName,this.productPrice, this.productId});
 
   @override
-  _ProductOverviewState  createState() => _ProductOverviewState();
-
+  _ProductOverviewState createState() => _ProductOverviewState();
 }
 
 class _ProductOverviewState extends State<ProductOverview> {
+  SinginCharacter _character = SinginCharacter.fill;
 
-  SignInCharacter _character = SignInCharacter.fill;
-
-  Widget bottomNavBar({
+  Widget bottomNavigatorBar({
     Color iconColor,
     Color backgroundColor,
     Color color,
     String title,
     IconData iconData,
   }) {
-    return Expanded(child: Container(
-      padding: EdgeInsets.all(20),
-      color: backgroundColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.all(20),
+        color: backgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
               iconData,
               size: 17,
               color: iconColor,
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Text(
-            title,
-            style: TextStyle(color: Colors.white70),
-          )
-
-
-        ],
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              title,
+              style: TextStyle(color: color),
+            ),
+          ],
+        ),
       ),
-
-    )
     );
-    
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Row(
         children: [
-          bottomNavBar(
+          bottomNavigatorBar(
             backgroundColor: textColor,
             color: Colors.white70,
             iconColor: Colors.grey,
             title: "Adauga la favorite",
             iconData: Icons.favorite_outline,
           ),
-          bottomNavBar(
+          bottomNavigatorBar(
             backgroundColor: primaryColor,
-            color: Colors.white70,
-            iconColor: Colors.black,
+            color: textColor,
+            iconColor: Colors.white70,
             title: "Adauga in cos",
-            iconData: Icons.shopping_cart_outlined,
+            iconData: Icons.shop_outlined,
           ),
         ],
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: textColor),
-        backgroundColor: Colors.green,
-
+        backgroundColor: primaryColor,
+        elevation: 0.0,
         title: Text(
-            "Detaliile produsului",
+          "Detalii produs",
           style: TextStyle(color: textColor),
         ),
-
       ),
       body: Column(
         children: [
           Expanded(
             flex: 2,
-              child: Container(
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: Text( "Busuioc"),// widget.productImage ?? "" de inlocuit cu asta cand e gata homepage
-                      subtitle: Text("50 de bani / legaura"),
+            child: Container(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ListTile(
+                      title: Text(widget.productName),
+                      subtitle: Text("Astazi doar  ${widget.productPrice} lei"),
                     ),
-                    Container(
-                      height: 220,
-                      width: double.infinity,
+                  ),
+                  Container(
+                      height: 250,
                       padding: EdgeInsets.all(40),
-                      child: Image.network('https://www.seekpng.com/png/detail/19-191759_watercolor-plant-png-basil-leaves.png',) ,//widget.productImage??"" si aici la fel
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      width: double.infinity,
-                      child: Text(
-                        "Disponibilitatea produsului",
-                        textAlign:TextAlign.start,
-                        style: TextStyle(
-                          color: textColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-
+                      child: Image.network(
+                        widget.productImage ?? "",
+                      )),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    child: Text(
+                      "Disponibilitatea produsului",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: Colors.green[700],
+                            ),
+                            Radio(
+                              value: SinginCharacter.fill,
+                              groupValue: _character,
+                              activeColor: Colors.green[700],
+                              onChanged: (value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Text("la doar ${widget.productPrice} lei"),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              30,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CircleAvatar(
-                                radius: 3,
-                                backgroundColor: Colors.green[700],
+                              Icon(
+                                Icons.add,
+                                size: 17,
+                                color: primaryColor,
                               ),
-                              Radio(
-                                value: SignInCharacter.fill,
-                                groupValue: _character,
-                                activeColor: Colors.green[700] ,
-                                onChanged:(value) {
-                                  setState((){
-                                    _character = value;
-                                  });
-
-                                },
-                              ),
-
+                              Text(
+                                "ADD",
+                                style: TextStyle(color: primaryColor),
+                              )
                             ],
                           ),
-                          Text("50 de bani"),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add,color: primaryColor,),
-                                Text("Adauga"),
-
-                              ],
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-
-          )
-          ),
-          Expanded(child: Container(
-            padding: EdgeInsets.all(30),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Despre produs", style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(height: 5,),
-                Text("O varietate de sortimente crescute in toate zonele tarii. Adus zilnic in cele mai bune conditii de la crescator direct la usa clientului."),
-
-              ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          )
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              width: double.infinity,
+              child: ListView(
+                children: [
+                  Text(
+                    "About This Product",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    " O varietate de soiuri locale, recoltate in fiecare zi de producator si aduse in fata usii tale de cei mai pregatiti livratori ai nostrii. Comanda chiar astazi",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: textColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
-
     );
-
   }
-
 }

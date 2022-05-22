@@ -1,205 +1,281 @@
 import 'package:flutter/material.dart';
+import 'package:licenta_2022_vr/providers/product_provider.dart';
+import 'package:licenta_2022_vr/screens/home/drawer_side.dart';
+import 'package:licenta_2022_vr/screens/home/single_product.dart';
+import 'package:licenta_2022_vr/screens/home/sinlge_product_kg.dart';
+import 'package:licenta_2022_vr/screens/product_overview/product_overview.dart';
 import 'package:licenta_2022_vr/screens/profile/my_profile.dart';
-class Homescreen extends StatelessWidget{
- @override
-  Widget singleProduct(){
-   return  Container(
-     margin: EdgeInsets.symmetric(horizontal: 10),
-     height: 230,
-     width: 160,
-     decoration: BoxDecoration(
-       color: Colors.white,
-       borderRadius: BorderRadius.circular(10),
-     ),
-     child: Column(
-       crossAxisAlignment: CrossAxisAlignment.start,
-       children: [
-         Expanded(
-           flex:2,
-           child: Image.network(
-             'https://www.seekpng.com/png/detail/19-191759_watercolor-plant-png-basil-leaves.png',
-           ),
-         ),
-         Expanded(
-           child: Padding(
-             padding: const EdgeInsets.symmetric(horizontal: 10),
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Text("Busuioc",style: TextStyle( fontWeight: FontWeight.bold,color: Colors.black),),
-                 Text("50 de bani/legatura",style: TextStyle( color: Colors.black38),),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [
-                     Expanded(
-                       child: Container(
-                         height: 20,
-                         width: 60,
-                         child: OutlinedButton(
-                           style: OutlinedButton.styleFrom(
-                             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                             side: BorderSide(color: Colors.green, width: 2),
-                           ),
-                           onPressed: () {},
-                           child: Row(
-                             children: [
-                               Expanded(flex:10, child: Text("legatura",style: TextStyle(color: Colors.black,fontSize: 9),)),
-                               Expanded(child: Icon(Icons.arrow_drop_down,color: Colors.green,size: 20,))
-                             ],
-                           ),
-                         ),
-                       ),
-                     ),
-                     Expanded(
-                       child: Container(
-                         height: 20,
-                         width: 60,
-                         child: OutlinedButton(
-                           style: OutlinedButton.styleFrom(
-                             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                             side: BorderSide(color: Colors.green, width: 2),
-                           ),
-                           onPressed: () {},
-                           child: Row(
-                             children: [
-                               Expanded(child: Icon(Icons.remove,color: Colors.green,size: 15,)),
-                               Expanded(child: Text(" 1",style: TextStyle(color: Colors.black),)),
-                               Expanded(child: Icon(Icons.add,color: Colors.green,size: 15,))
-                             ],
-                           ),
-                         ),
-                       ),
-                     ),
-                   ],
-                 ),
-
-               ],
-             ),
-           ),
-         )
-       ],
-     ),
-   );
- }
-
+import 'package:licenta_2022_vr/screens/search/search.dart';
+import 'package:provider/provider.dart';
+class HomeScreen extends StatefulWidget{
   @override
-  Widget listTile({IconData icon , String tile, Function onTap}){
-   return ListTile(
-     onTap: onTap ,
-     leading: Icon(
-        icon,
-       size: 32,
-     ),
-     title: Text(tile , style: TextStyle(color: Colors.black), ),
-   );
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  ProductProvider productProvider;
+
+ @override
+
+
+
+
+  Widget _buildHerbProducts(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('La legatura'),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Search(
+                       search: productProvider.getHerbProductDataList,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  'toate produsele',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: productProvider.getHerbProductDataList.map(
+                  (herbsProductData) {
+                return SingleProduct(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProductOverview(
+                          productPrice: herbsProductData.productPrice,
+                          productName: herbsProductData.productName,
+                          productImage: herbsProductData.productImage,
+                          productId: herbsProductData.productId,
+                        ),
+                      ),
+                    );
+                  },
+                  productId: herbsProductData.productId,
+                  productPrice: herbsProductData.productPrice,
+                  productImage: herbsProductData.productImage,
+                  productName: herbsProductData.productName,
+                );
+              },
+            ).toList(),
+            // children: [
+
+            // ],
+          ),
+        ),
+      ],
+    );
   }
 
+  Widget _buildFruitProducts(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Fructe'),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Search(
+                        search: productProvider.getFruitProductDataList,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  'toate produsele',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: productProvider.getFruitProductDataList.map(
+                  (fruitProductData) {
+                    return SingleProduct(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductOverview(
+                              productPrice: fruitProductData.productPrice,
+                              productName: fruitProductData.productName,
+                              productImage: fruitProductData.productImage,
+                              productId: fruitProductData.productId,
+                            ),
+                          ),
+                        );
+                      },
+                      productPrice: fruitProductData.productPrice,
+                      productImage: fruitProductData.productImage,
+                      productName: fruitProductData.productName,
+                      productId: fruitProductData.productId,
+                    );
+              },
+            ).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSeasonProducts(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('De sezon'),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Search(
+                        search: productProvider.getSeasonProductDataList,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  'toate produsele',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: productProvider.getSeasonProductDataList.map(
+                  (seasonProductData) {
+                    return SingleProduct(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductOverview(
+                              productPrice: seasonProductData.productPrice,
+                              productName: seasonProductData.productName,
+                              productImage: seasonProductData.productImage,
+                              productId: seasonProductData.productId,
+                            ),
+                          ),
+                        );
+                      },
+                      productPrice: seasonProductData.productPrice,
+                      productImage: seasonProductData.productImage,
+                      productName: seasonProductData.productName,
+                      productId: seasonProductData.productId,
+                    );
+              },
+            ).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVegiProducts(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Legume'),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Search(
+                        search: productProvider.getVegiProductDataList,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  'toate produsele',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: productProvider.getVegiProductDataList.map(
+                  (vegiProductData) {
+                    return SingleProduct(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductOverview(
+                              productPrice: vegiProductData.productPrice,
+                              productName: vegiProductData.productName,
+                              productImage: vegiProductData.productImage,
+                              productId: vegiProductData.productId,
+                            ),
+                          ),
+                        );
+                      },
+                      productPrice: vegiProductData.productPrice,
+                      productImage: vegiProductData.productImage,
+                      productName: vegiProductData.productName,
+                      productId: vegiProductData.productId,
+                    );
+              },
+            ).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    ProductProvider productProvider = Provider.of(context, listen: false);
+    productProvider.fetchHerbProductData();
+    productProvider.fetchFruitProductData();
+    productProvider.fetchVegiProductData();
+    productProvider.fetchSeasonProductData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    productProvider = Provider.of(context);
    return Scaffold(
      backgroundColor: Color(0xffd4d6d2),
-     drawer: Drawer(
-       child: Container(
-         color: Colors.green,
-         child: ListView(
-           children: [
-             DrawerHeader(
-                 child: Row(
-                  children: [
-                  CircleAvatar(
-                   backgroundColor: Colors.white54,
-                    radius: 45,
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Color(0xff08bf08),
-                    ),
-
-                  ),
-                    SizedBox(
-                     width: 20,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("   Bine ai venit!"),
-                        SizedBox(height: 7,),
-                        Container(
-                          height: 25,
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            child: Text("Autentificare", style: TextStyle(color: Colors.black),),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  side: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                            )
-
-                          ),
-                        )
-                      ],
-                    )
-                ],
-              ),
-             ),
-             listTile(icon: Icons.home_outlined,tile:"Acasa"),
-             listTile(icon: Icons.shopping_bag_outlined,tile:"Finalizare cos"),
-             listTile(
-                 icon: Icons.person_outlined,
-                 tile:"Profil",
-                 onTap: (){
-                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyProfile(),),);
-                 }
-             ),
-             listTile(icon: Icons.notifications_outlined,tile:"Notificari"),
-             listTile(icon: Icons.star_outline,tile:"Rating"),
-             listTile(icon: Icons.favorite_outline,tile:"Wishlist"),
-             listTile(icon: Icons.copy_outlined,tile:"Plangeri&Reclamatii"),
-             listTile(icon: Icons.format_quote_outlined,tile:"Intrebari comune"),
-
-             Container(
-               padding: EdgeInsets.symmetric(horizontal: 20),
-               height: 350,
-               child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                   Text("Contact", style: TextStyle(color: Colors.black),),
-                   SizedBox(
-                     height: 20,
-                   ),
-                   Row(
-
-                     children: [
-                       Text("Telefon:", style: TextStyle(color: Colors.black54),),
-                       SizedBox(width: 25,),
-                       Text("+075573827734", style: TextStyle(color: Colors.black54),)
-                     ],
-                   ),
-                   SizedBox(height: 10,),
-                   Row(
-
-                     children: [
-                       Text("Email:", style: TextStyle(color: Colors.black54),),
-                       SizedBox(width: 15,),
-                       Text("Piata_Hermes@retry.com", style: TextStyle(color: Colors.black54),)
-                     ],
-                   )
-                 ],
-               ),
-             )
-
-           ],
-
-         ),
-       ),
-
-     ),
+    drawer: DrawerSide(),
      appBar: AppBar(
        iconTheme: IconThemeData(color: Colors.black),
        title: Text("Acasa", style: TextStyle(color: Colors.black),),
@@ -208,7 +284,15 @@ class Homescreen extends StatelessWidget{
          Padding(
            padding: const EdgeInsets.all(8.0),
            child: CircleAvatar(
-             child: Icon(Icons.search,size: 17,color: Colors.black,),
+             child: IconButton(
+               padding: EdgeInsets.zero,
+               icon: Icon(
+                 Icons.search,size: 17,
+                 color: Colors.black,),
+               onPressed: () {
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Search(search: productProvider.search,),),);
+               },
+             ),
              backgroundColor: Color(0xffc2fac8),
              radius: 12,
            ),
@@ -282,7 +366,7 @@ class Homescreen extends StatelessWidget{
 
                        ),
                        Text(
-                         "La toate legumele",
+                         "La Toate legumele",
                          style: TextStyle(fontSize: 20, color: Colors.white,),
                        )
                      ],
@@ -299,137 +383,13 @@ class Homescreen extends StatelessWidget{
 
            ),
 
-           Padding(
-             padding: const EdgeInsets.all(10.0),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
-                     "La legatura",
-                   style: TextStyle(fontWeight: FontWeight.bold),
-                 ),
-                 Text(
-                   "Toate produsele",
-                   style: TextStyle(color: Colors.grey),
-                 ),
+           _buildHerbProducts(context),
 
+           _buildVegiProducts(context),
 
-               ],
+          _buildFruitProducts(context),
 
-             ),
-           ), //legatura
-           SingleChildScrollView(
-             scrollDirection: Axis.horizontal,
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-
-               ],
-             ),
-           ),
-
-           Padding(
-             padding: const EdgeInsets.all(10.0),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
-                   "Legume",
-                   style: TextStyle(fontWeight: FontWeight.bold),
-                 ),
-                 Text(
-                   "Toate produsele",
-                   style: TextStyle(color: Colors.grey),
-                 ),
-
-
-               ],
-
-             ),
-           ), //legume
-           SingleChildScrollView(
-             scrollDirection: Axis.horizontal,
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-
-               ],
-             ),
-           ),
-
-           Padding(
-             padding: const EdgeInsets.all(10.0),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
-                   "Fructe",
-                   style: TextStyle(fontWeight: FontWeight.bold),
-                 ),
-                 Text(
-                   "Toate produsele",
-                   style: TextStyle(color: Colors.grey),
-                 ),
-
-
-               ],
-
-             ),
-           ), //fructe
-           SingleChildScrollView(
-             scrollDirection: Axis.horizontal,
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-
-               ],
-             ),
-           ),
-
-           Padding(
-             padding: const EdgeInsets.all(10.0),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
-                   "De sezon",
-                   style: TextStyle(fontWeight: FontWeight.bold),
-                 ),
-                 Text(
-                   "Toate produsele",
-                   style: TextStyle(color: Colors.grey),
-                 ),
-
-
-               ],
-
-             ),
-           ), //de sezon
-           SingleChildScrollView(
-             scrollDirection: Axis.horizontal,
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-                 singleProduct(),
-
-               ],
-             ),
-           ),
+          _buildSeasonProducts(context),
 
 
          ],
@@ -438,5 +398,4 @@ class Homescreen extends StatelessWidget{
 
    );
   }
-  
 }

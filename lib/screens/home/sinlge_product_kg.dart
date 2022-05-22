@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
 import 'package:licenta_2022_vr/models/product_model.dart';
-import 'package:licenta_2022_vr/widgets/count.dart';
 import 'package:licenta_2022_vr/widgets/product_unit.dart';
 
-class SingleProduct extends StatelessWidget {
+class SingleProductKg extends StatelessWidget {
   final String productImage;
   final String productName;
-  final int productPrice;
+  //final double productPrice;
   final Function onTap;
-  final String productId;
-  SingleProduct({this.productImage, this.productName,this.onTap, this.productPrice, this.productId,});
+  SingleProductKg({this.productImage, this.productName,this.onTap,});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -56,7 +54,7 @@ class SingleProduct extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "$productPrice/ lei",//de introdus
+                          'Pret_produs',//de introdus
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -78,7 +76,7 @@ class SingleProduct extends StatelessWidget {
                                   children: [
                                     Expanded(
                                         child: Text(
-                                          'KG',
+                                          '1 kg',
                                           style: TextStyle(fontSize: 11),
                                         )),
                                     Center(
@@ -95,13 +93,7 @@ class SingleProduct extends StatelessWidget {
                             SizedBox(
                               width: 5,
                             ),
-                            Count(
-                              productId: productId,
-                              productName: productName,
-                              productImage: productImage,
-                              productPrice: productPrice,
-                              //productQuantity: "1",
-                            ),
+                            //Count(),
                           ],
                         ),
                       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
 import 'package:licenta_2022_vr/screens/home/home_screen.dart';
 import 'package:licenta_2022_vr/screens/profile/my_profile.dart';
+import 'package:licenta_2022_vr/screens/review_cart/review_cart.dart';
 
 class DrawerSide extends StatelessWidget{
 
@@ -21,7 +22,7 @@ class DrawerSide extends StatelessWidget{
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.green,
+        color: primaryColor,
         child: ListView(
           children: [
             DrawerHeader(
@@ -72,12 +73,16 @@ class DrawerSide extends StatelessWidget{
                 icon: Icons.home_outlined,
                 tile:"Acasa",
                 onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Homescreen(),),);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen(),),);
                 }
             ),
             listTile(
                 icon: Icons.shopping_bag_outlined,
                 tile:"Finalizare cos",
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ReviewCart(),),);
+                }
+
             ),
             listTile(
                 icon: Icons.person_outlined,
