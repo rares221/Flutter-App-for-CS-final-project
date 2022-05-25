@@ -10,6 +10,7 @@ class ReviewCartProvider with ChangeNotifier {
     String cartImage,
     int cartPrice,
     int cartQuantity,
+    //bool addedCheck,
   }) async {
     await FirebaseFirestore.instance
         .collection("ReviewCart")
@@ -23,6 +24,34 @@ class ReviewCartProvider with ChangeNotifier {
         "cartImage": cartImage,
         "cartPrice": cartPrice,
         "cartQuantity": cartQuantity,
+        "addedCheck": true,
+
+      },
+    );
+  }
+
+  /////////Update//////////
+  void updateReviewCartData({
+    String cartId,
+    String cartName,
+    String cartImage,
+    int cartPrice,
+    int cartQuantity,
+    //bool addedCheck,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection("ReviewCart")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("YourCartReview")
+        .doc(cartId)
+        .update(
+      {
+        "cartId": cartId,
+        "cartName": cartName,
+        "cartImage": cartImage,
+        "cartPrice": cartPrice,
+        "cartQuantity": cartQuantity,
+        "addedCheck": true,
 
       },
     );
@@ -35,7 +64,7 @@ class ReviewCartProvider with ChangeNotifier {
      QuerySnapshot reviewCartValues= await  FirebaseFirestore.instance
          .collection("ReviewCart")
          .doc(FirebaseAuth.instance.currentUser.uid)
-         .collection("YourCartRevie")
+         .collection("YourCartReview")
          .get();
      reviewCartValues.docs.forEach((element) {
        ReviewCartModel reviewCartModel=ReviewCartModel(
@@ -57,6 +86,17 @@ class ReviewCartProvider with ChangeNotifier {
    }
 
 
+//////////////////Delete Cart Data//////////////
+
+    deleteCartData(cartId) async {
+      await FirebaseFirestore.instance
+          .collection("ReviewCart")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .collection("YourCartReview")
+          .doc(cartId)
+         .delete();
+       notifyListeners();
+    }
 }
 
 

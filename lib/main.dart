@@ -4,6 +4,7 @@ import 'package:licenta_2022_vr/config/colors.dart';
 import 'package:licenta_2022_vr/providers/product_provider.dart';
 import 'package:licenta_2022_vr/providers/review_cart_provider.dart';
 import 'package:licenta_2022_vr/providers/user_provider.dart';
+import 'package:licenta_2022_vr/providers/wish_list_provider.dart';
 import 'package:licenta_2022_vr/screens/home/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:licenta_2022_vr/screens/product_overview/product_overview.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<ReviewCartProvider>(
             create: (context)=>ReviewCartProvider(),
+          ),
+          ChangeNotifierProvider<WishListProvider>(
+            create: (context)=>WishListProvider(),
           ),
     ],
 

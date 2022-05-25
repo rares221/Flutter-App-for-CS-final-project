@@ -1,5 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
+import 'package:licenta_2022_vr/providers/wish_list_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../../widgets/count.dart';
+import '../review_cart/review_cart.dart';
 
 
 
@@ -11,7 +18,8 @@ class ProductOverview extends StatefulWidget {
   final String productImage;
   final int productPrice;
   final String productId;
-  ProductOverview({this.productImage, this.productName,this.productPrice, this.productId});
+  final int productQuantity;
+  ProductOverview({this.productImage, this.productName,this.productPrice,  this.productId, this.productQuantity});
 
   @override
   _ProductOverviewState createState() => _ProductOverviewState();
@@ -26,34 +34,60 @@ class _ProductOverviewState extends State<ProductOverview> {
     Color color,
     String title,
     IconData iconData,
+    Function onTap,
   }) {
     return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        color: backgroundColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              iconData,
-              size: 17,
-              color: iconColor,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              title,
-              style: TextStyle(color: color),
-            ),
-          ],
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          color: backgroundColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                iconData,
+                size: 17,
+                color: iconColor,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                title,
+                style: TextStyle(color: color),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  bool wishListCheck=false;
+  
+  getWishListCheck(){
+    FirebaseFirestore.instance
+        .collection("Wishlist")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("YourWishList")
+        .get().then((value) =>{
+          value.docs.forEach((element) {
+            if(this.mounted) {
+              if (value != null) {
+                setState(() {
+                  wishListCheck = element.get("wishListAddedCheck");
+                });
+              }
+            }
+          })
+    } );
+  }
+
   @override
   Widget build(BuildContext context) {
+    WishListProvider wishListProvider=Provider.of(context);
+    getWishListCheck();
     return Scaffold(
       bottomNavigationBar: Row(
         children: [
@@ -62,14 +96,31 @@ class _ProductOverviewState extends State<ProductOverview> {
             color: Colors.white70,
             iconColor: Colors.grey,
             title: "Adauga la favorite",
-            iconData: Icons.favorite_outline,
+            iconData:wishListCheck==false? Icons.favorite_outline:Icons.favorite,
+            onTap: (){
+              setState((){
+                wishListCheck = !wishListCheck;
+              });
+              if (wishListCheck==true){
+                wishListProvider.addWishListData(
+                  wishListId: widget.productId,
+                  wishListImage: widget.productImage,
+                  wishListName: widget.productName,
+                  wishListPrice: widget.productPrice,
+                  wishListQuantity: widget.productQuantity,
+                );
+              }
+            }
           ),
           bottomNavigatorBar(
             backgroundColor: primaryColor,
             color: textColor,
             iconColor: Colors.white70,
-            title: "Adauga in cos",
+            title: "Mergi la cos",
             iconData: Icons.shop_outlined,
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ReviewCart(),),);
+              }
           ),
         ],
       ),
@@ -141,34 +192,41 @@ class _ProductOverviewState extends State<ProductOverview> {
                           ],
                         ),
                         Text("la doar ${widget.productPrice} lei"),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              30,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add,
-                                size: 17,
-                                color: primaryColor,
-                              ),
-                              Text(
-                                "ADD",
-                                style: TextStyle(color: primaryColor),
-                              )
-                            ],
-                          ),
+                        Count(
+                          productId: widget.productId,
+                          productName: widget.productName,
+                          productImage: widget.productImage,
+                          productPrice: widget.productPrice,
+                          productQuantity: 1,
                         ),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(
+                        //     horizontal: 30,
+                        //     vertical: 10,
+                        //   ),
+                        //   decoration: BoxDecoration(
+                        //     border: Border.all(
+                        //       color: Colors.grey,
+                        //     ),
+                        //     borderRadius: BorderRadius.circular(
+                        //       30,
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Icon(
+                        //         Icons.add,
+                        //         size: 17,
+                        //         color: primaryColor,
+                        //       ),
+                        //       Text(
+                        //         "ADD",
+                        //         style: TextStyle(color: primaryColor),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   )

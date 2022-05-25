@@ -7,10 +7,53 @@ import 'package:licenta_2022_vr/widgets/single_item.dart';
 import 'package:provider/provider.dart';
 
 class ReviewCart extends StatelessWidget{
+  ReviewCartProvider reviewCartProvider;
+
+
+
+
   @override
   Widget build(BuildContext context) {
     ReviewCartProvider reviewCartProvider= Provider.of(context);
     reviewCartProvider.getReviewCartData();
+
+
+    showAlertDialog(BuildContext context,ReviewCartModel data) {
+      // set up the buttons
+      Widget cancelButton = FlatButton(
+        child: Text("Nu mersi"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+      Widget continueButton = FlatButton(
+        child: Text("Sterge produsul"),
+        onPressed: () {
+          reviewCartProvider.deleteCartData(data.cartId);
+          Navigator.of(context).pop();
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Produsul tau"),
+        content: Text("Esti sigur(a) ca vrei sa stergi produsul?"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
+
    return Scaffold(
      bottomNavigationBar: ListTile(
        title: Text("Suma totala",style: TextStyle(fontSize: 18,color: textColor),),
@@ -37,11 +80,9 @@ class ReviewCart extends StatelessWidget{
 
        ),
      ),
-     drawer: DrawerSide(),
      body:reviewCartProvider.getReviewCartDataList.isEmpty?Center(
        child: Text("Nici un produs selectat"),
-     ):
-     ListView.builder(
+     ): ListView.builder(
        itemCount: reviewCartProvider.getReviewCartDataList.length,
        itemBuilder:(context,index) {
          ReviewCartModel data = reviewCartProvider.getReviewCartDataList[index];
@@ -51,22 +92,22 @@ class ReviewCart extends StatelessWidget{
                  height: 10,
              ),
           SingleItem(
-                 validator: true,
-                 productImage: data.cartImage,
-                 productName: data.cartName,
-                 productPrice: data.cartPrice,
-                 productId: data.cartId,
-                 productQuantity:data.cartQuantity,
-              ),
+              validator: true,
+              productImage: data.cartImage,
+              productName: data.cartName,
+              productPrice: data.cartPrice,
+              productId: data.cartId,
+              productQuantity: data.cartQuantity,
+              onDelete: () {
+              showAlertDialog(context, data);
+            },
+          ),
 
            ],
          );
        },
        ),
-
      );
-
-
   }
-  
+
 }

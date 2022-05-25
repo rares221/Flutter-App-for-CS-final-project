@@ -1,137 +1,276 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
-class SingleItem extends StatelessWidget{
-
+import 'package:provider/provider.dart';
+import '../providers/review_cart_provider.dart';
+import 'count.dart';
+class SingleItem extends StatefulWidget {
+  bool validator = false;
   String productImage;
   String productName;
+  bool wishListChecked = false;
   int productPrice;
-  bool validator= false;
   String productId;
   int productQuantity;
-  SingleItem({this.validator, this.productPrice, this.productImage ,this.productName,this.productId,this.productQuantity});
+  Function onDelete;
+  SingleItem(
+      {this.productQuantity,
+        this.productId,
+        this.onDelete,
+        this.validator,
+        this.productImage,
+        this.productName,
+        this.productPrice,
+        this.wishListChecked});
+
+  @override
+  _SingleItemState createState() => _SingleItemState();
+}
+
+class _SingleItemState extends State<SingleItem> {
+  ReviewCartProvider reviewCartProvider;
+
+  int count;
+  getCount() {
+    setState(() {
+      count = widget.productQuantity;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    getCount();
+    reviewCartProvider = Provider.of<ReviewCartProvider>(context);
+    reviewCartProvider.getReviewCartData();
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           child: Row(
             children: [
               Expanded(
                 child: Container(
-                height: 80,
+                  height: 90,
                   child: Center(
-                    child: Image.network(productImage),
+                    child: Image.network(
+                      widget.productImage,
+                    ),
                   ),
-               ),
+                ),
               ),
               Expanded(
                 child: Container(
-                  height: 80,
+                  height: 90,
                   child: Column(
-                    mainAxisAlignment: validator==false
-                        ?MainAxisAlignment.spaceAround
-                        :MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: widget.validator == false
+                        ? MainAxisAlignment.spaceAround
+                        : MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(productName ,style: TextStyle(color:textColor, fontWeight: FontWeight.bold)),
-                          Text("$productPrice" ,style: TextStyle(color:Colors.grey,)),
-
+                          Text(
+                            widget.productName,
+                            style: TextStyle(
+                                color: textColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          Text(
+                            "${widget.productPrice}\lei",
+                            style: TextStyle(
+                                color: textColor, fontWeight: FontWeight.bold),
+                          ),
                         ],
-
                       ),
-                      validator==false?Container(
-                        margin: EdgeInsets.only(right: 15) ,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        height: 35,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(30),
+                      widget.validator == false
+                          ? GestureDetector(
+                           onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: new Text('50 Grame'),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      title: new Text('250 Grame'),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      title: new Text('500 Grame'),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      title: new Text('1 Kg'),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                            },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 15),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          height: 35,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "50 Grame",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 20,
+                                  color: primaryColor,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child:  Text("kg" ,style: TextStyle(color:Colors.grey,)),
-                            ),
-                            Center(
-                              child: Icon(Icons.arrow_drop_down, size: 20,color: primaryColor,),
-                            ),
-                          ],
-                        ),
-                      ):Text("kg")
+                      )
+                          : Text("50 Grame")
                     ],
                   ),
                 ),
               ),
               Expanded(
                 child: Container(
-                  height: 100,
-                  padding: validator==false?EdgeInsets.symmetric(horizontal: 15, vertical: 32):EdgeInsets.only(left: 15,right: 15),
-                  child: validator==false?Container(
-                    height: 25,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(Icons.add , color:primaryColor,size: 20, ),
-                          Text( "$productPrice lei" ,style: TextStyle(color:primaryColor),),
-                        ],
-                      ),
-                    ),
-                  ):Column(
-                    children: [
-
-                      Icon(Icons.delete,size: 30,color: Colors.black54,),
-                      SizedBox(height: 5,),
-
-                      Container(
-                          height: 25,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(20),
+                  height: 90,
+                  padding: widget.validator == false
+                      ? EdgeInsets.symmetric(horizontal: 15, vertical: 32)
+                      : EdgeInsets.only(left: 15, right: 15),
+                  child: widget.validator == false
+                      ? Count(
+                    productId: widget.productId,
+                    productImage: widget.productImage,
+                    productName: widget.productName,
+                    productPrice: widget.productPrice,
+                  )
+                      : Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: widget.onDelete,
+                          child: Icon(
+                            Icons.delete,
+                            size: 30,
+                            color: Colors.black54,
                           ),
-                          child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children:  [
-                                 Icon(
-                                      Icons.add ,
-                                      color:primaryColor,
-                                      size: 20, ),
-                                  Text("   Adauga",style: TextStyle(color: primaryColor),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        widget.wishListChecked == false
+                            ? Container(
+                              height: 25,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(30),
+                          ),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        if (count == 1) {
+                                          Fluttertoast.showToast(
+                                            msg:
+                                            "Limita minima atinsa",
+
+                                          );
+                                        } else {
+                                          setState(() {
+                                            count--;
+                                          });
+                                          reviewCartProvider.updateReviewCartData(
+                                            cartImage: widget.productImage,
+                                            cartId: widget.productId,
+                                            cartName: widget.productName,
+                                            cartPrice: widget.productPrice,
+                                            cartQuantity: count,
+                                          );
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.remove,
+                                        color: primaryColor,
+                                        size: 20,
+                                      ),
+                                    ),
+                                Text(
+                                  "$count",
+                                  style: TextStyle(
+                                    color: primaryColor,
                                   ),
-
-
-                                ],
-                              ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    if (count < 10) {
+                                      setState(() {
+                                        count++;
+                                      });
+                                      reviewCartProvider.updateReviewCartData(
+                                        cartImage: widget.productImage,
+                                        cartId: widget.productId,
+                                        cartName: widget.productName,
+                                        cartPrice: widget.productPrice,
+                                        cartQuantity: count,
+                                      );
+                                    }
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    color: primaryColor,
+                                    size: 20,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                    ],
-                  )
+                        )
+                            : Container(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-
-
             ],
           ),
         ),
-        validator==false?Container(
-
-        ):Divider(
+        widget.validator == false
+            ? Container()
+            : Divider(
           height: 1,
           color: Colors.black45,
         )
       ],
     );
   }
-
 }

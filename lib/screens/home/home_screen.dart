@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/providers/product_provider.dart';
+import 'package:licenta_2022_vr/providers/user_provider.dart';
 import 'package:licenta_2022_vr/screens/home/drawer_side.dart';
 import 'package:licenta_2022_vr/screens/home/single_product.dart';
 import 'package:licenta_2022_vr/screens/home/sinlge_product_kg.dart';
@@ -7,6 +8,8 @@ import 'package:licenta_2022_vr/screens/product_overview/product_overview.dart';
 import 'package:licenta_2022_vr/screens/profile/my_profile.dart';
 import 'package:licenta_2022_vr/screens/search/search.dart';
 import 'package:provider/provider.dart';
+
+import '../review_cart/review_cart.dart';
 class HomeScreen extends StatefulWidget{
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget{
 class _HomeScreenState extends State<HomeScreen> {
 
   ProductProvider productProvider;
+  UserProvider userProvider;
 
  @override
 
@@ -63,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           productName: herbsProductData.productName,
                           productImage: herbsProductData.productImage,
                           productId: herbsProductData.productId,
+                          productQuantity: herbsProductData.productQuantity,
                         ),
                       ),
                     );
@@ -71,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   productPrice: herbsProductData.productPrice,
                   productImage: herbsProductData.productImage,
                   productName: herbsProductData.productName,
+                  productQuantity: herbsProductData.productQuantity,
                 );
               },
             ).toList(),
@@ -125,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               productName: fruitProductData.productName,
                               productImage: fruitProductData.productImage,
                               productId: fruitProductData.productId,
+                              productQuantity: fruitProductData.productQuantity,
                             ),
                           ),
                         );
@@ -133,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       productImage: fruitProductData.productImage,
                       productName: fruitProductData.productName,
                       productId: fruitProductData.productId,
+                      productQuantity: fruitProductData.productQuantity,
                     );
               },
             ).toList(),
@@ -184,6 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               productName: seasonProductData.productName,
                               productImage: seasonProductData.productImage,
                               productId: seasonProductData.productId,
+                              productQuantity: seasonProductData.productQuantity,
                             ),
                           ),
                         );
@@ -192,6 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       productImage: seasonProductData.productImage,
                       productName: seasonProductData.productName,
                       productId: seasonProductData.productId,
+                      productQuantity: seasonProductData.productQuantity,
                     );
               },
             ).toList(),
@@ -243,6 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               productName: vegiProductData.productName,
                               productImage: vegiProductData.productImage,
                               productId: vegiProductData.productId,
+                             productQuantity: vegiProductData.productQuantity,
                             ),
                           ),
                         );
@@ -251,6 +262,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       productImage: vegiProductData.productImage,
                       productName: vegiProductData.productName,
                       productId: vegiProductData.productId,
+                      productQuantity: vegiProductData.productQuantity,
+
                     );
               },
             ).toList(),
@@ -273,9 +286,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     productProvider = Provider.of(context);
+    userProvider = Provider.of(context);
+    userProvider.getUserData();
    return Scaffold(
      backgroundColor: Color(0xffd4d6d2),
-    drawer: DrawerSide(),
+     drawer: DrawerSide(
+       userProvider: userProvider ,
+     ),
      appBar: AppBar(
        iconTheme: IconThemeData(color: Colors.black),
        title: Text("Acasa", style: TextStyle(color: Colors.black),),
@@ -299,10 +316,15 @@ class _HomeScreenState extends State<HomeScreen> {
          ),
          Padding(
            padding: const EdgeInsets.symmetric(horizontal: 5),
-           child: CircleAvatar(
-             child: Icon(Icons.shop,size: 17,color: Colors.black,),
-             backgroundColor: Color(0xffc2fac8),
-             radius: 12,
+           child: GestureDetector(
+             onTap: (){
+               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ReviewCart(),),);
+             },
+             child: CircleAvatar(
+               child: Icon(Icons.shop,size: 17,color: Colors.black,),
+               backgroundColor: Color(0xffc2fac8),
+               radius: 12,
+             ),
            ),
          )
        ],
@@ -359,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
                        Padding(
                          padding: const EdgeInsets.all(8.0),
                          child: Text(
-                           "30% ",
+                           "60% ",
                            style: TextStyle(fontSize: 50, color: Colors.white,fontWeight: FontWeight.bold),
 
                          ),

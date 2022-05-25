@@ -1,110 +1,135 @@
 import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
+import 'package:licenta_2022_vr/models/user_model.dart';
+import 'package:licenta_2022_vr/providers/user_provider.dart';
 import 'package:licenta_2022_vr/screens/home/home_screen.dart';
 import 'package:licenta_2022_vr/screens/profile/my_profile.dart';
 import 'package:licenta_2022_vr/screens/review_cart/review_cart.dart';
+import 'package:provider/provider.dart';
 
-class DrawerSide extends StatelessWidget{
+import '../wish_list/wish_list.dart';
 
-  Widget listTile({IconData icon , String tile, Function onTap}){
-    return ListTile(
-      onTap: onTap ,
-      leading: Icon(
-        icon,
-        size: 32,
+class DrawerSide extends StatefulWidget {
+
+  UserProvider userProvider;
+  DrawerSide({ this.userProvider});
+
+  @override
+  _DrawerSideState createState() => _DrawerSideState();
+}
+
+class _DrawerSideState extends State<DrawerSide> {
+
+
+
+  Widget listTile({String tile, IconData icon, Function onTap}) {
+    return Container(
+      height: 50,
+      child: ListTile(
+        onTap: onTap,
+        leading: Icon(
+          icon,
+          size: 28,
+        ),
+        title: Text(
+          tile,
+          style: TextStyle(color: textColor),
+        ),
       ),
-      title: Text(tile , style: TextStyle(color: textColor), ),
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
+    var userData = widget.userProvider.currentData;
     return Drawer(
       child: Container(
         color: primaryColor,
         child: ListView(
           children: [
             DrawerHeader(
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white54,
-                    radius: 45,
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Color(0xff08bf08),
-                    ),
-
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("   Bine ai venit!"),
-                      SizedBox(height: 7,),
-                      Container(
-                        height: 25,
-                        child: OutlinedButton(
-                            onPressed: () {},
-                            child: Text("Autentificare", style: TextStyle(color: Colors.black),),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  side: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                            )
-
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 43,
+                      backgroundColor: Colors.white54,
+                      child: CircleAvatar(
+                        backgroundColor: primaryColor,
+                        backgroundImage: NetworkImage(
+                         userData.userImage ??
+                              "https://s3.envato.com/files/328957910/vegi_thumb.png",
                         ),
-                      )
-                    ],
-                  )
-                ],
+                        radius: 40,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(userData.userName),
+                        Text(
+                          userData.userEmail,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             listTile(
                 icon: Icons.home_outlined,
-                tile:"Acasa",
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen(),),);
+                tile: "Acasa",
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => HomeScreen(),),);
                 }
             ),
+
             listTile(
                 icon: Icons.shopping_bag_outlined,
-                tile:"Finalizare cos",
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ReviewCart(),),);
+                tile: "Finalizare cos",
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ReviewCart(),),);
                 }
 
             ),
             listTile(
                 icon: Icons.person_outlined,
-                tile:"Profil",
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyProfile(),),);
+                tile: "Profil",
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                      builder: (context) => MyProfile(userProvider:widget.userProvider),),);
                 }
             ),
             listTile(icon: Icons.notifications_outlined,
-                tile:"Notificari"
+                tile: "Notificari"
             ),
             listTile(icon: Icons.star_outline,
-                tile:"Rating"
+                tile: "Rating"
             ),
-            listTile(icon: Icons.favorite_outline,
-                tile:"Wishlist"
-            ),
+            listTile(
+                icon: Icons.favorite_outline,
+                tile: "Wishlist",
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => WishLsit(),
+                    ),
+                  );
+                }),
             listTile(icon: Icons.copy_outlined,
-                tile:"Plangeri&Reclamatii"
+                tile: "Plangeri&Reclamatii"
             ),
             listTile(icon: Icons.format_quote_outlined,
-                tile:"Intrebari comune"
+                tile: "Intrebari comune"
             ),
 
             Container(
@@ -120,9 +145,11 @@ class DrawerSide extends StatelessWidget{
                   Row(
 
                     children: [
-                      Text("Telefon:", style: TextStyle(color: Colors.black54),),
+                      Text(
+                        "Telefon:", style: TextStyle(color: Colors.black54),),
                       SizedBox(width: 25,),
-                      Text("+075573827734", style: TextStyle(color: Colors.black54),)
+                      Text("+075573827734",
+                        style: TextStyle(color: Colors.black54),)
                     ],
                   ),
                   SizedBox(height: 10,),
@@ -131,7 +158,8 @@ class DrawerSide extends StatelessWidget{
                     children: [
                       Text("Email:", style: TextStyle(color: Colors.black54),),
                       SizedBox(width: 15,),
-                      Text("Piata_Hermes@retry.com", style: TextStyle(color: Colors.black54),)
+                      Text("Piata_Hermes@retry.com",
+                        style: TextStyle(color: Colors.black54),)
                     ],
                   )
                 ],
@@ -145,5 +173,4 @@ class DrawerSide extends StatelessWidget{
 
     );
   }
-
 }

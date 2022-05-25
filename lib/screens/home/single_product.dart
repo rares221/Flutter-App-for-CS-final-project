@@ -10,7 +10,8 @@ class SingleProduct extends StatelessWidget {
   final int productPrice;
   final Function onTap;
   final String productId;
-  SingleProduct({this.productImage, this.productName,this.onTap, this.productPrice, this.productId,});
+  final int productQuantity;
+  SingleProduct({this.productImage, this.productName,this.onTap, this.productPrice, this.productId, this.productQuantity,});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -67,28 +68,65 @@ class SingleProduct extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                padding: EdgeInsets.only(left: 5),
-                                height: 25,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: Text(
-                                          'KG',
-                                          style: TextStyle(fontSize: 11),
-                                        )),
-                                    Center(
-                                      child: Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 20,
-                                        color: primaryColor,
-                                      ),
-                                    )
-                                  ],
+                              child: InkWell(
+                                onTap:(){ showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          ListTile(
+                                            title: new Text('Kg'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: new Text('500 de grame'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: new Text('250 de grame'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: new Text('50 de grame'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 5),
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(
+                                            'KG',
+                                            style: TextStyle(fontSize: 11),
+                                          )),
+                                      Center(
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 20,
+                                          color: primaryColor,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -100,7 +138,7 @@ class SingleProduct extends StatelessWidget {
                               productName: productName,
                               productImage: productImage,
                               productPrice: productPrice,
-                              //productQuantity: "1",
+                              productQuantity: 1,
                             ),
                           ],
                         ),
