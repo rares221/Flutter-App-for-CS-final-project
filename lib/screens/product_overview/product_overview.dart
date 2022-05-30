@@ -11,7 +11,7 @@ import '../review_cart/review_cart.dart';
 
 
 
-enum SinginCharacter { fill, outline }
+enum SignCharacter { fill, outline }
 
 class ProductOverview extends StatefulWidget {
   final String productName;
@@ -19,14 +19,17 @@ class ProductOverview extends StatefulWidget {
   final int productPrice;
   final String productId;
   final int productQuantity;
-  ProductOverview({this.productImage, this.productName,this.productPrice,  this.productId, this.productQuantity});
+  final List<dynamic> productUnit;
+  ProductOverview({this.productImage, this.productName,this.productPrice,  this.productId, this.productQuantity, this.productUnit});
 
   @override
   _ProductOverviewState createState() => _ProductOverviewState();
 }
 
 class _ProductOverviewState extends State<ProductOverview> {
-  SinginCharacter _character = SinginCharacter.fill;
+  var unitData;
+  var firstValue;
+  SignCharacter _character = SignCharacter.fill;
 
   Widget bottomNavigatorBar({
     Color iconColor,
@@ -107,8 +110,10 @@ class _ProductOverviewState extends State<ProductOverview> {
                   wishListImage: widget.productImage,
                   wishListName: widget.productName,
                   wishListPrice: widget.productPrice,
-                  wishListQuantity: widget.productQuantity,
+                  wishListQuantity: 2,
                 );
+              } else {
+                wishListProvider.deleteWishtList(widget.productId);
               }
             }
           ),
@@ -180,7 +185,7 @@ class _ProductOverviewState extends State<ProductOverview> {
                               backgroundColor: Colors.green[700],
                             ),
                             Radio(
-                              value: SinginCharacter.fill,
+                              value: SignCharacter.fill,
                               groupValue: _character,
                               activeColor: Colors.green[700],
                               onChanged: (value) {
@@ -191,42 +196,15 @@ class _ProductOverviewState extends State<ProductOverview> {
                             ),
                           ],
                         ),
-                        Text("la doar ${widget.productPrice} lei"),
+                        Text("de la doar ${widget.productPrice} lei"),
                         Count(
                           productId: widget.productId,
                           productName: widget.productName,
                           productImage: widget.productImage,
                           productPrice: widget.productPrice,
-                          productQuantity: 1,
+                          productUnit: widget.productUnit,
                         ),
-                        // Container(
-                        //   padding: EdgeInsets.symmetric(
-                        //     horizontal: 30,
-                        //     vertical: 10,
-                        //   ),
-                        //   decoration: BoxDecoration(
-                        //     border: Border.all(
-                        //       color: Colors.grey,
-                        //     ),
-                        //     borderRadius: BorderRadius.circular(
-                        //       30,
-                        //     ),
-                        //   ),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.center,
-                        //     children: [
-                        //       Icon(
-                        //         Icons.add,
-                        //         size: 17,
-                        //         color: primaryColor,
-                        //       ),
-                        //       Text(
-                        //         "ADD",
-                        //         style: TextStyle(color: primaryColor),
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
+
                       ],
                     ),
                   )
@@ -241,7 +219,7 @@ class _ProductOverviewState extends State<ProductOverview> {
               child: ListView(
                 children: [
                   Text(
-                    "About This Product",
+                    "Despre acest produs",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,

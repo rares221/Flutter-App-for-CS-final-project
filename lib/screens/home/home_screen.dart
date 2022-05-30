@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           productImage: herbsProductData.productImage,
                           productId: herbsProductData.productId,
                           productQuantity: herbsProductData.productQuantity,
+                          productUnit: herbsProductData.productUnit,
                         ),
                       ),
                     );
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   productImage: herbsProductData.productImage,
                   productName: herbsProductData.productName,
                   productQuantity: herbsProductData.productQuantity,
+                  productUnit: herbsProductData.productUnit,
                 );
               },
             ).toList(),
@@ -132,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               productImage: fruitProductData.productImage,
                               productId: fruitProductData.productId,
                               productQuantity: fruitProductData.productQuantity,
+                              productUnit: fruitProductData.productUnit,
                             ),
                           ),
                         );
@@ -141,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       productName: fruitProductData.productName,
                       productId: fruitProductData.productId,
                       productQuantity: fruitProductData.productQuantity,
+                      productUnit: fruitProductData.productUnit,
                     );
               },
             ).toList(),
@@ -193,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               productImage: seasonProductData.productImage,
                               productId: seasonProductData.productId,
                               productQuantity: seasonProductData.productQuantity,
+                              productUnit: seasonProductData.productUnit,
                             ),
                           ),
                         );
@@ -202,6 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       productName: seasonProductData.productName,
                       productId: seasonProductData.productId,
                       productQuantity: seasonProductData.productQuantity,
+                      productUnit: seasonProductData.productUnit,
                     );
               },
             ).toList(),
@@ -253,7 +259,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               productName: vegiProductData.productName,
                               productImage: vegiProductData.productImage,
                               productId: vegiProductData.productId,
-                             productQuantity: vegiProductData.productQuantity,
+                              productQuantity: vegiProductData.productQuantity,
+                              productUnit: vegiProductData.productUnit,
                             ),
                           ),
                         );
@@ -263,6 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       productName: vegiProductData.productName,
                       productId: vegiProductData.productId,
                       productQuantity: vegiProductData.productQuantity,
+                      productUnit: vegiProductData.productUnit,
 
                     );
               },

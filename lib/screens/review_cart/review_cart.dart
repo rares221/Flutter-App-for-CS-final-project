@@ -6,11 +6,13 @@ import 'package:licenta_2022_vr/screens/home/drawer_side.dart';
 import 'package:licenta_2022_vr/widgets/single_item.dart';
 import 'package:provider/provider.dart';
 
-class ReviewCart extends StatelessWidget{
+class ReviewCart extends StatefulWidget{
+  @override
+  State<ReviewCart> createState() => _ReviewCartState();
+}
+
+class _ReviewCartState extends State<ReviewCart> {
   ReviewCartProvider reviewCartProvider;
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +95,13 @@ class ReviewCart extends StatelessWidget{
              ),
           SingleItem(
               validator: true,
+              wishListCheck: false,
               productImage: data.cartImage,
               productName: data.cartName,
               productPrice: data.cartPrice,
               productId: data.cartId,
               productQuantity: data.cartQuantity,
+              productUnit: data.cartUnit,
               onDelete: () {
               showAlertDialog(context, data);
             },
@@ -109,5 +113,4 @@ class ReviewCart extends StatelessWidget{
        ),
      );
   }
-
 }

@@ -3,12 +3,15 @@ import 'package:licenta_2022_vr/config/colors.dart';
 import 'package:licenta_2022_vr/models/product_model.dart';
 import 'package:licenta_2022_vr/widgets/product_unit.dart';
 
+import '../../widgets/count.dart';
+
 class SingleProductKg extends StatelessWidget {
   final String productImage;
   final String productName;
-  //final double productPrice;
+  final int productPrice;
   final Function onTap;
-  SingleProductKg({this.productImage, this.productName,this.onTap,});
+  final String productId;
+  SingleProductKg({this.productImage, this.productName,this.onTap, this.productPrice, this.productId,});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -54,7 +57,7 @@ class SingleProductKg extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Pret_produs',//de introdus
+                          '$productPrice\ lei',//de introdus
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -65,35 +68,78 @@ class SingleProductKg extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                padding: EdgeInsets.only(left: 5),
-                                height: 25,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: Text(
-                                          '1 kg',
-                                          style: TextStyle(fontSize: 11),
-                                        )),
-                                    Center(
-                                      child: Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 20,
-                                        color: primaryColor,
-                                      ),
-                                    )
-                                  ],
+                              child: InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            ListTile(
+                                              title: new Text('50 grame'),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            ListTile(
+                                              title: new Text('250 grame'),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            ListTile(
+                                              title: new Text('500 grame'),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            ListTile(
+                                              title: new Text('1 Kg'),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 5),
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(
+                                            '50 grame',
+                                            style: TextStyle(fontSize: 11),
+                                          )),
+                                      Center(
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 20,
+                                          color: primaryColor,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             SizedBox(
                               width: 5,
                             ),
-                            //Count(),
+                            Count(
+                              productId: productId,
+                              productImage: productImage,
+                              productName: productName,
+                              productPrice: productPrice,
+                            ),
                           ],
                         ),
                       ],

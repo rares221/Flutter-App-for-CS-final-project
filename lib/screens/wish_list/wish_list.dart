@@ -75,6 +75,7 @@ class _WishLsitState extends State<WishLsit> {
                 height: 10,
               ),
               SingleItem(
+                wishListCheck: true,
                 validator: true,
                 productImage: data.productImage,
                 productName: data.productName,

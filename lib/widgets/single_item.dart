@@ -8,20 +8,22 @@ class SingleItem extends StatefulWidget {
   bool validator = false;
   String productImage;
   String productName;
-  bool wishListChecked = false;
+  bool wishListCheck = false;
   int productPrice;
   String productId;
   int productQuantity;
   Function onDelete;
+  var productUnit;
   SingleItem(
       {this.productQuantity,
         this.productId,
+        this.productUnit,
         this.onDelete,
         this.validator,
         this.productImage,
         this.productName,
         this.productPrice,
-        this.wishListChecked});
+        this.wishListCheck,});
 
   @override
   _SingleItemState createState() => _SingleItemState();
@@ -78,7 +80,7 @@ class _SingleItemState extends State<SingleItem> {
                                 fontSize: 16),
                           ),
                           Text(
-                            "${widget.productPrice}\lei",
+                            "${widget.productPrice}\ lei",
                             style: TextStyle(
                                 color: textColor, fontWeight: FontWeight.bold),
                           ),
@@ -86,27 +88,21 @@ class _SingleItemState extends State<SingleItem> {
                       ),
                       widget.validator == false
                           ? GestureDetector(
-                           onTap: () {
-                            showModalBottomSheet(
+                        onTap: () {
+                          showModalBottomSheet(
                               context: context,
                               builder: (context) {
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     ListTile(
-                                      title: new Text('50 Grame'),
+                                      title: new Text('250 grame'),
                                       onTap: () {
                                         Navigator.pop(context);
                                       },
                                     ),
                                     ListTile(
-                                      title: new Text('250 Grame'),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: new Text('500 Grame'),
+                                      title: new Text('500 grame'),
                                       onTap: () {
                                         Navigator.pop(context);
                                       },
@@ -120,7 +116,7 @@ class _SingleItemState extends State<SingleItem> {
                                   ],
                                 );
                               });
-                            },
+                        },
                         child: Container(
                           margin: EdgeInsets.only(right: 15),
                           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -133,7 +129,7 @@ class _SingleItemState extends State<SingleItem> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  "50 Grame",
+                                  "50 grame",
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 14,
@@ -151,7 +147,7 @@ class _SingleItemState extends State<SingleItem> {
                           ),
                         ),
                       )
-                          : Text("50 Grame")
+                          : Text("Gramajele produselor pot diferi")
                     ],
                   ),
                 ),
@@ -184,46 +180,46 @@ class _SingleItemState extends State<SingleItem> {
                         SizedBox(
                           height: 5,
                         ),
-                        widget.wishListChecked == false
+                        widget.wishListCheck == false
                             ? Container(
-                              height: 25,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(30),
+                          height: 25,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        if (count == 1) {
-                                          Fluttertoast.showToast(
-                                            msg:
-                                            "Limita minima atinsa",
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    if (count == 1) {
+                                      Fluttertoast.showToast(
+                                        msg:
+                                        "Ati atins limita minima",
 
-                                          );
-                                        } else {
-                                          setState(() {
-                                            count--;
-                                          });
-                                          reviewCartProvider.updateReviewCartData(
-                                            cartImage: widget.productImage,
-                                            cartId: widget.productId,
-                                            cartName: widget.productName,
-                                            cartPrice: widget.productPrice,
-                                            cartQuantity: count,
-                                          );
-                                        }
-                                      },
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: primaryColor,
-                                        size: 20,
-                                      ),
-                                    ),
+                                      );
+                                    } else {
+                                      setState(() {
+                                        count--;
+                                      });
+                                      reviewCartProvider.updateReviewCartData(
+                                        cartImage: widget.productImage,
+                                        cartId: widget.productId,
+                                        cartName: widget.productName,
+                                        cartPrice: widget.productPrice,
+                                        cartQuantity: count,
+                                      );
+                                    }
+                                  },
+                                  child: Icon(
+                                    Icons.remove,
+                                    color: primaryColor,
+                                    size: 20,
+                                  ),
+                                ),
                                 Text(
                                   "$count",
                                   style: TextStyle(

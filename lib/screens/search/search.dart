@@ -4,7 +4,7 @@ import 'package:licenta_2022_vr/widgets/single_item.dart';
 
 import '../../models/product_model.dart';
 
-enum Orderby {lowToHigh, highToLow, aplphabetically}
+enum OrderBy {lowToHigh, highToLow, aplphabetically}
 
 class Search extends StatefulWidget{
   final List<ProductModel> search;
@@ -17,7 +17,7 @@ class _SearchState extends State<Search> {
 
   String query="";
 
-  Orderby _defaultOrder= Orderby.aplphabetically;
+  OrderBy _defaultOrder= OrderBy.aplphabetically;
 
 
   List<ProductModel> searchItem(String query){
@@ -51,7 +51,7 @@ class _SearchState extends State<Search> {
                   ),
                 ),
                 RadioListTile(
-                    value: Orderby.lowToHigh,
+                    value: OrderBy.lowToHigh,
                     groupValue: _defaultOrder,
                     title: Text("Pret crescator"),
                     onChanged: (vav) {
@@ -61,7 +61,7 @@ class _SearchState extends State<Search> {
                       Navigator.of(context).pop();
                     }),
                 RadioListTile(
-                    value: Orderby.highToLow,
+                    value: OrderBy.highToLow,
                     groupValue: _defaultOrder,
                     title: Text("Pret descrescator"),
                     onChanged: (vav) {
@@ -71,7 +71,7 @@ class _SearchState extends State<Search> {
                       Navigator.of(context).pop();
                     }),
                 RadioListTile(
-                  value: Orderby.aplphabetically,
+                  value: OrderBy.aplphabetically,
                   groupValue: _defaultOrder,
                   title: Text("Alfabetic"),
                   onChanged: (vav) {

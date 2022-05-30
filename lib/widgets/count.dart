@@ -11,14 +11,14 @@ class Count extends StatefulWidget {
   String productImage;
   String productId;
   int productPrice;
-  int productQuantity;
+  var productUnit;
 
   Count({
     this.productName,
     this.productId,
     this.productImage,
     this.productPrice,
-    this.productQuantity,
+    this.productUnit,
   });
   @override
   _CountState createState() => _CountState();
@@ -122,23 +122,24 @@ class _CountState extends State<Count> {
         ],
       )
           : Center(
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              addedChecker = true;
-            });
-            reviewCartProvider.addReviewCartData(
-              cartId: widget.productId,
-              cartImage: widget.productImage,
-              cartName: widget.productName,
-              cartPrice: widget.productPrice,
-              cartQuantity: count,
-            );
-          },
-          child: Text(
-            "Adauga",
-            style: TextStyle(color: primaryColor),
-          ),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  addedChecker = true;
+                });
+                reviewCartProvider.addReviewCartData(
+                  cartId: widget.productId,
+                  cartImage: widget.productImage,
+                  cartName: widget.productName,
+                  cartPrice: widget.productPrice,
+                  cartQuantity: count,
+                  cartUnit: widget.productUnit,
+                );
+              },
+              child: Text(
+                "Adauga",
+                style: TextStyle(color: primaryColor),
+              ),
         ),
       ),
     );

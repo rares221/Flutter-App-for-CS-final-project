@@ -4,16 +4,31 @@ import 'package:licenta_2022_vr/models/product_model.dart';
 import 'package:licenta_2022_vr/widgets/count.dart';
 import 'package:licenta_2022_vr/widgets/product_unit.dart';
 
-class SingleProduct extends StatelessWidget {
+class SingleProduct extends StatefulWidget {
   final String productImage;
   final String productName;
   final int productPrice;
   final Function onTap;
   final String productId;
   final int productQuantity;
-  SingleProduct({this.productImage, this.productName,this.onTap, this.productPrice, this.productId, this.productQuantity,});
+  final List<dynamic> productUnit;
+  SingleProduct({this.productImage, this.productName,this.onTap, this.productPrice, this.productId, this.productQuantity, this.productUnit,});
+
+  @override
+  State<SingleProduct> createState() => _SingleProductState();
+}
+
+class _SingleProductState extends State<SingleProduct> {
+  var unitData;
+  var firstValue;
   @override
   Widget build(BuildContext context) {
+    widget.productUnit.firstWhere((element) {
+      setState(() {
+        firstValue = element;
+      });
+      return true;
+    });
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -31,13 +46,13 @@ class SingleProduct extends StatelessWidget {
               children: [
                 GestureDetector(
 
-                  onTap: onTap,
+                  onTap: widget.onTap,
                   child: Container(
                     height: 150,
                     padding: EdgeInsets.all(5),
                     width: double.infinity,
                     child: Image.network(
-                      productImage,
+                      widget.productImage,
                     ),
                   ),
                 ),
@@ -50,14 +65,14 @@ class SingleProduct extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          productName,
+                          widget.productName,
                           style: TextStyle(
                             color: textColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          "$productPrice/ lei",//de introdus
+                          "${widget.productPrice}/ lei ${widget.productUnit.first} ",//de introdus
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -68,77 +83,53 @@ class SingleProduct extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: InkWell(
-                                onTap:(){ showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
+                              child: ProductUnit(
+                               onTap:(){ showModalBottomSheet(
+                                     context: context,
+                                     builder: (context) {
                                       return Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          ListTile(
-                                            title: new Text('Kg'),
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: new Text('500 de grame'),
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: new Text('250 de grame'),
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: new Text('50 de grame'),
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: widget.productUnit.map<Widget>((data) {
+                                         return Column(
+                                           children: [
+                                             Padding(
+                                               padding: const EdgeInsets.all(8.0),
+                                               child: InkWell(
+                                                 onTap: ()async{
+                                                   setState((){
+                                                     unitData = data;
+                                                   });
+                                                   Navigator.of(context).pop();
+                                                 },
+                                                 child: Text(
+                                                   data,
+                                                   style: TextStyle(
+                                                       color: Colors.black,
+                                                       fontSize: 18
+                                                   ),
+                                                 ),
+                                               ),
+                                             )
+                                           ],
+                                         );
+                                       }).toList(),
                                       );
-                                    });
-
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 5),
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(
-                                            'KG',
-                                            style: TextStyle(fontSize: 11),
-                                          )),
-                                      Center(
-                                        child: Icon(
-                                          Icons.arrow_drop_down,
-                                          size: 20,
-                                          color: primaryColor,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                     }
+                                    );
+                                 },
+                                title: unitData == null?firstValue:unitData,
                               ),
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Count(
-                              productId: productId,
-                              productName: productName,
-                              productImage: productImage,
-                              productPrice: productPrice,
-                              productQuantity: 1,
+                              productId: widget.productId,
+                              productName: widget.productName,
+                              productImage: widget.productImage,
+                              productPrice: widget.productPrice,
+                              productUnit: unitData == null?firstValue:unitData,
                             ),
                           ],
                         ),
