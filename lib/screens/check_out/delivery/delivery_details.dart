@@ -5,12 +5,12 @@ import 'package:licenta_2022_vr/screens/check_out/delivery/single_delivery_eleme
 import 'package:licenta_2022_vr/screens/check_out/payment/payment_sumarry.dart';
 class DeliveryDetails extends StatelessWidget{
   List<Widget> addressMock =[
-    SingleDeliveryElement(
-    address : "Busteni 9 , Cluj-Napoca,",
-    elementTitle: "Vlasie Rares",
-    addressType: "Acasa",
-    number: "074809823",
-    )
+     SingleDeliveryElement(
+     address : "Busteni 9 , Cluj-Napoca,",
+     elementTitle: "Vlasie Rares",
+     addressType: "Acasa",
+     number: "074809823",
+     )
   ];
 
   @override
@@ -20,6 +20,11 @@ class DeliveryDetails extends StatelessWidget{
         backgroundColor: primaryColor,
         child: Icon(Icons.add),
         onPressed: (){
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddDeliveryAddress(),
+            ),
+          );
 
         },
       ),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:licenta_2022_vr/providers/check_out_provider.dart';
+import 'package:licenta_2022_vr/screens/check_out/map_dir/custom_google_map.dart';
+import 'package:provider/provider.dart';
 
 import '../../../config/colors.dart';
 import '../../../widgets/custom_text_field.dart';
+
 
 class AddDeliveryAddress extends StatefulWidget{
   @override
@@ -18,6 +22,7 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
   var currentType= AddressTypes.Acasa;
   @override
   Widget build(BuildContext context) {
+    CheckOutProvider checkOutProvider= Provider.of(context);
       return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: textColor),
@@ -32,13 +37,15 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
         bottomNavigationBar: Container(
           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
           width: 48,
-          child: MaterialButton(
+          child:checkOutProvider.loadingBuffer ==false ? MaterialButton(
             onPressed: (){
-
+              checkOutProvider.textValidator(context, currentType);
             },
             child: Text("Adauga ca adresa noua" ,style: TextStyle(color: textColor),),
             color: primaryColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          ): Center(
+            child: CircularProgressIndicator(),
           ),
         ),
         body: Padding(
@@ -47,36 +54,48 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
               children: [
                 CustomTextField(
                   customText: "Nume",
+                  controller: checkOutProvider.firstName,
                 ),
                 CustomTextField(
                   customText: "Prenume",
+                  controller: checkOutProvider.lastName,
                 ),
                 CustomTextField(
                   customText: "Numar de telefon",
+                  controller: checkOutProvider.telephone,
+                ),
+
+                CustomTextField(
+                  customText: "Strada",
+                  controller: checkOutProvider.street,
                 ),
                 CustomTextField(
                   customText: "Cladire",
-                ),
-                CustomTextField(
-                  customText: "Strada",
+                  controller: checkOutProvider.building,
                 ),
                 CustomTextField(
                   customText: "Etaj",
+                  controller: checkOutProvider.floor,
                 ),
                 CustomTextField(
                   customText: "Apartament",
+                  controller: checkOutProvider.apartament,
                 ),
                 CustomTextField(
                   customText: "Cod postal (optional)",
+                  controller: checkOutProvider.areaCode,
                 ),
                 CustomTextField(
                   customText: "Oras",
+                  controller: checkOutProvider.city,
                 ),
                 CustomTextField(
                   customText: "Alte precizari (ex: un lift defect)",
+                  controller: checkOutProvider.other,
                 ),
                 InkWell(
                   onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CustomGoogleMap(),),);
                   },
                   child: Container(
                     height: 45,

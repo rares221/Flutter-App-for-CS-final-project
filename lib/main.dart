@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
+import 'package:licenta_2022_vr/providers/check_out_provider.dart';
 import 'package:licenta_2022_vr/providers/product_provider.dart';
 import 'package:licenta_2022_vr/providers/review_cart_provider.dart';
 import 'package:licenta_2022_vr/providers/user_provider.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<WishListProvider>(
             create: (context)=>WishListProvider(),
+          ),
+          ChangeNotifierProvider<CheckOutProvider>(
+            create: (context)=>CheckOutProvider(),
           ),
     ],
 
