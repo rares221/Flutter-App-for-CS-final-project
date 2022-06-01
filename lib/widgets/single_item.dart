@@ -80,7 +80,7 @@ class _SingleItemState extends State<SingleItem> {
                                 fontSize: 16),
                           ),
                           Text(
-                            "${widget.productPrice}\ lei",
+                            "${widget.productPrice}\ lei ",
                             style: TextStyle(
                                 color: textColor, fontWeight: FontWeight.bold),
                           ),
@@ -147,7 +147,7 @@ class _SingleItemState extends State<SingleItem> {
                           ),
                         ),
                       )
-                          : Text("Gramajele produselor pot diferi")
+                          : Text(widget.productUnit)
                     ],
                   ),
                 ),

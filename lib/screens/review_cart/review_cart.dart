@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:licenta_2022_vr/config/colors.dart';
 import 'package:licenta_2022_vr/models/review_cart_model.dart';
 import 'package:licenta_2022_vr/providers/review_cart_provider.dart';
+import 'package:licenta_2022_vr/screens/check_out/delivery/delivery_details.dart';
 import 'package:licenta_2022_vr/screens/home/drawer_side.dart';
 import 'package:licenta_2022_vr/widgets/single_item.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +61,7 @@ class _ReviewCartState extends State<ReviewCart> {
    return Scaffold(
      bottomNavigationBar: ListTile(
        title: Text("Suma totala",style: TextStyle(fontSize: 18,color: textColor),),
-       subtitle:Text("170 de lei") ,
+       subtitle:Text("${reviewCartProvider.getTotalPrice()} lei ") ,
        trailing: Container(
          width: 160,
          child: MaterialButton(
@@ -67,7 +69,18 @@ class _ReviewCartState extends State<ReviewCart> {
            color: primaryColor,
            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
            onPressed: (){
+             if(reviewCartProvider.getReviewCartDataList.isEmpty){
+               return  Fluttertoast.showToast(
+                 msg:
+                 "Nu aveti nici un produs in cos",
 
+               );
+             }
+             Navigator.of(context).push(
+               MaterialPageRoute(
+                 builder: (context) => DeliveryDetails(),
+               ),
+             );
            },
          ),
        ),

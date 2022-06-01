@@ -72,7 +72,7 @@ class _SingleProductState extends State<SingleProduct> {
                           ),
                         ),
                         Text(
-                          "${widget.productPrice}/ lei ${widget.productUnit.first} ",//de introdus
+                          "${widget.productPrice} lei / ${widget.productUnit.first} ",//de introdus
                           style: TextStyle(
                             color: Colors.grey,
                           ),
