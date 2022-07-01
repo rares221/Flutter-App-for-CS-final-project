@@ -113,11 +113,11 @@ class _DrawerSideState extends State<DrawerSide> {
                 tile: "Notificari"
             ),
             listTile(icon: Icons.star_outline,
-                tile: "Rating"
+                tile: "Apreciaza-ne"
             ),
             listTile(
                 icon: Icons.favorite_outline,
-                tile: "Wishlist",
+                tile: "Favorite",
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -158,7 +158,7 @@ class _DrawerSideState extends State<DrawerSide> {
                     children: [
                       Text("Email:", style: TextStyle(color: Colors.black54),),
                       SizedBox(width: 15,),
-                      Text("Piata_Hermes@retry.com",
+                      Text("Piata_Hermes@gmail.com",
                         style: TextStyle(color: Colors.black54),)
                     ],
                   )

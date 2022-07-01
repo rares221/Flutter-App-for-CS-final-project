@@ -202,7 +202,7 @@ class _ProductOverviewState extends State<ProductOverview> {
                           productName: widget.productName,
                           productImage: widget.productImage,
                           productPrice: widget.productPrice,
-                          productUnit: widget.productUnit,
+                          productUnit: "500 de grame",
                         ),
 
                       ],

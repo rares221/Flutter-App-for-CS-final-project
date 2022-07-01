@@ -82,7 +82,7 @@ class _WishLsitState extends State<WishLsit> {
                 productPrice: data.productPrice,
                 productId: data.productId,
                 productQuantity: data.productQuantity,
-                productUnit: "gramajele por diferi",
+                productUnit: "gramajele pot diferi",
                 onDelete: () {
                   showAlertDialog(context,data);
                 },

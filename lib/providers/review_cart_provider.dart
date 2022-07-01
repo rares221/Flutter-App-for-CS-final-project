@@ -105,12 +105,20 @@ class ReviewCartProvider with ChangeNotifier {
 
 
 ////////////// ReviewCartDeleteFunction ////////////
-  deleteCartData(cartId) {
+  void deleteCartData(cartId) async {
     FirebaseFirestore.instance
         .collection("ReviewCart")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("YourCartReview")
         .doc(cartId)
+        .delete();
+    notifyListeners();
+  }
+
+  void deleteCompleteCartData() async{
+    FirebaseFirestore.instance
+        .collection("ReviewCart")
+        .doc(FirebaseAuth.instance.currentUser.uid)
         .delete();
     notifyListeners();
   }

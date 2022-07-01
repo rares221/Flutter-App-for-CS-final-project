@@ -1,27 +1,27 @@
 class DeliveryAddressModel {
   String firstName;
   String lastName;
-  String mobileNo;
-  String alternateMobileNo;
-  //String scoirty;
+  String telephone;
   String street;
-  String landMark;
+  String building;
+  String floor;
+  String apartament;
   String city;
-  String area;
-  String pinCode;
+  String other;
+  String areaCode;
   String addressType;
 
   DeliveryAddressModel({
-    this.addressType,
-    this.area,
-    this.alternateMobileNo,
-    this.city,
     this.firstName,
-    this.landMark,
     this.lastName,
-    this.mobileNo,
-    this.pinCode,
+    this.telephone,
     this.street,
-   // this.scoirty,
+    this.building,
+    this.floor,
+    this.apartament,
+    this.city,
+    this.other,
+    this.areaCode,
+    this.addressType,
   });
 }

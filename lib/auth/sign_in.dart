@@ -68,7 +68,7 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Sign in to continue"),
+                  Text("Autentifica-te pentru a continua"),
                   Text(
                       "Hermes",
                     style: TextStyle(fontSize: 50,
@@ -88,7 +88,7 @@ class _SignInState extends State<SignIn> {
                     children: [
                       SignInButton(
                         Buttons.Google,
-                        text: "Sign in with Google",
+                        text: "Foloseste contul Google",
                         onPressed: () {
                           _googleSignUp().then(
                                 (value) => Navigator.of(context).pushReplacement(
@@ -99,9 +99,12 @@ class _SignInState extends State<SignIn> {
                           );
                         },
                       ),
+                      SizedBox(
+                        height: 15,
+                      ),
                       SignInButton(
                         Buttons.Apple,
-                        text: "Sign in with Apple Id",
+                        text: "Foloseste contul Apple Id",
                         onPressed: () {
 
                         },
@@ -111,8 +114,8 @@ class _SignInState extends State<SignIn> {
 
                   Column(
                     children: [
-                      Text("By signing in you are agreeing to our", style: TextStyle(color: Colors.blueGrey,),),
-                      Text("Terms & Privacy Policy",style: TextStyle(color: Colors.blueAccent),),
+                      Text("Prin continuarea utilizarii sunteti de acord cu", style: TextStyle(color: Colors.blueGrey,),),
+                      Text("Termenii si conditiile",style: TextStyle(color: Colors.blueAccent),),
                     ],
                   ),
 

@@ -39,7 +39,7 @@ class _MyProfileState extends State<MyProfile> {
         backgroundColor: primaryColor,
         elevation: 0.0,
         title: Text(
-          "My Profile",
+          "Profilul meu",
           style: TextStyle(
             fontSize: 18,
             color: textColor,
