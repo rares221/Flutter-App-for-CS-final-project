@@ -1,4 +1,5 @@
-# licenta_2022_vr
+# CS degree starter 2022
+
 
 Final degree project
 
